@@ -1,3 +1,4 @@
+using Microsoft.SemanticKernel;
 using SearchKernelProject.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<OpenAPI>(builder.Configuration.GetSection("OpenAPI"));
+
+//var openApi = builder.Configuration.GetSection("OpenAPI").Get<OpenAPI>();
+//var kernel = Kernel.Builder
+//    .WithOpenAITextCompletionService(openApi.ChatModel, openApi.OpenApiKey)
+//    .Build();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
