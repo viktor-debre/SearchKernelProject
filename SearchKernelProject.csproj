@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Plugins\OrchestratorPlugin\GetIntent\config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Plugins\OrchestratorPlugin\GetIntent\config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.SemanticKernel" Version="0.18.230725.3-preview" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>

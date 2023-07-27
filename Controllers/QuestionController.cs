@@ -5,6 +5,8 @@ using Models;
 using Microsoft.Extensions.Options;
 using SearchKernelProject.Configuration;
 using Microsoft.SemanticKernel;
+using SearchKernelProject.Plugins.OrchestratorPlugin.GetIntent;
+using System.Reflection;
 
 [ApiController]
 [Route("[controller]")]
@@ -16,7 +18,7 @@ public class QuestionController : ControllerBase
 
     public QuestionController(ILogger<QuestionController> logger,
         IOptions<OpenAPI> openApi//,
-        //IKernel kernel
+                                 //IKernel kernel
         )
     {
         _logger = logger;
@@ -39,10 +41,22 @@ public class QuestionController : ControllerBase
 
         var kernel = builder.Build();//_kernel;
 
+        var directory = System.IO.Directory.GetCurrentDirectory();
+        var pluginsDirectory = Path.Combine(directory, "Plugins");
+        // Import the OrchestratorPlugin from the plugins directory.
+        var orchestratorPlugin = kernel
+             .ImportSemanticSkillFromDirectory(pluginsDirectory, "OrchestratorPlugin");
+
+        // Get the GetIntent function from the OrchestratorPlugin and run it
+        var result = await orchestratorPlugin["GetIntent"]
+             .InvokeAsync(model.Question);
+
+        //var prompt = @"{{$input}}
+
+        //    One line TLDR with the fewest words.";
         var prompt = @"{{$input}}
 
-            One line TLDR with the fewest words.";
-
+        Compute and provide result of math operation";
         var summarize = kernel.CreateSemanticFunction(prompt);
 
         var result1 = await summarize.InvokeAsync(model.Question);
